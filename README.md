@@ -97,34 +97,6 @@ El software guía al especialista y al participante a través de seis etapas sec
 | **Etapa 5** | **Palabras Funcionales** | Articulación de vocablos con carga fonética bilabial (*Mapa, Bebé, Bomba*). | 10 repeticiones por palabra (3 ciclos) |
 | **Etapa 6** | **Frases** | Producción de oraciones continuas (*"Mi mamá me mima"*, *"Papá toma sopa"*, *"Mi bebé toma biberón"*). | 1 ciclo completo |
 
----
-
-## Estructura del Repositorio y Archivos Generados
-
-```text
-AMVA-Sistema-Multimodal/
-│
-├── Interfaz Final.py                     # Aplicación principal (GUI, procesamiento multimodal y reportes)
-├── logo_amva.jpeg                        # Logotipo institucional cargado en el encabezado de la interfaz
-├── requirements.txt                      # Dependencias del entorno de Python
-├── README.md                             # Documentación técnica del sistema
-│
-├── firmware/
-│   └── adquisicion_semg_esp32/
-│       └── adquisicion_semg_esp32.ino    # Firmware de muestreo a 1000 Hz para ESP32
-│
-└── AMVA_resultados/                      # Directorio autogenerado durante las sesiones clínicas
-    └── Sujeto_XX/
-        ├── Audio/
-        │   └── Sujeto_XX_Etapa_N.wav                  # Registros acústicos por etapa
-        ├── Datos/
-        │   ├── Video_parametros_por_frame.csv         # Serie temporal cinemática cuadro por cuadro
-        │   ├── Video_parametros_resumen.csv           # Estadísticos de apertura, ancho, ROM y velocidad
-        │   └── Audio_parametros.csv                   # Tiempos de fonación, pausas y frecuencia fundamental
-        ├── sEMG/
-        │   └── Etapa_N_sEMG.csv                       # Señal cruda y filtrada muestreada a 1000 Hz
-        └── Reporte_Clinico_Sujeto_XX.pdf              # Reporte consolidado generado con ReportLab
-```
 
 ---
 
