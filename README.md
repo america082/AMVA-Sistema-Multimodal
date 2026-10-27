@@ -31,26 +31,27 @@ El sistema centraliza en una interfaz gráfica de usuario (GUI) desarrollada en 
 A continuación se presenta la arquitectura general de interconexión de hardware y los bloques de procesamiento digital implementados en el software central:
 
 ```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#CCFBF1', 'primaryTextColor': '#1E293B', 'primaryBorderColor': '#0F766E', 'lineColor': '#0F766E', 'secondaryColor': '#F8FAFC', 'tertiaryColor': '#FFFFFF' }}}%%
 graph TD
-    subgraph Adquisición de Bioseñales y Datos
+    subgraph Adquisición [Adquisición de Bioseñales y Datos]
         A[Músculo Orbicularis Oris<br/>Electrodos Ag/AgCl] -->|Potencial bioeléctrico| B(Sensor Analógico<br/>MyoWare 2.0)
         B -->|Señal acondicionada| C[Microcontrolador ESP32<br/>ADC 12 bits · Pin GPIO 4<br/>Muestreo: 1000 Hz]
         D[Cámara de Video Frontal<br/>Distancia estandarizada: 30 cm]
-        E[Micrófono Vocal<br/>Muestreo: 44.1 kHz · 16 bits]
+        E[Micrófono Vocal<br/>Captura de voz sincronizada]
     end
 
-    subgraph Procesamiento Digital en Python - Interfaz AMVA
-        C -->|UART / Serial 115200 bps<br/>Búfer de 50 muestras| F[Módulo sEMG<br/>Filtro IIR Notch 60 Hz Q=30<br/>Filtro Butterworth Pasa-Altas 4° Orden 20 Hz]
-        D -->|Fotogramas RGB| G[Módulo de Visión<br/>MediaPipe Face Mesh<br/>Landmarks 13, 14, 61, 291 y región elíptica]
-        E -->|Flujo PCM Monoaural| H[Módulo Acústico<br/>Ventaneo de 30 ms / paso 10 ms<br/>Umbral adaptativo RMS y Autocorrelación]
+    subgraph Procesamiento [Procesamiento Digital en Python - AMVA]
+        C -->|UART / Serial 115200 bps<br/>Búfer de 50 muestras| F[Módulo sEMG<br/>Filtro Notch 60 Hz y Pasa-Altas 20 Hz]
+        D -->|Fotogramas RGB| G[Módulo de Visión<br/>MediaPipe Face Mesh<br/>Landmarks 13, 14, 61, 291]
+        E -->|Flujo de Voz| H[Módulo Acústico<br/>Evaluación de Inicio, Fin<br/>y Estabilidad de Duración]
     end
 
-    subgraph Extracción de Características y Salidas Clínicas
-        F --> I[Descriptores sEMG<br/>RMS, Media, Desviación Estándar<br/>Exportación a CSV]
-        G --> J[Descriptores Cinemáticos<br/>Apertura, Ancho, ROM Vertical/Horizontal<br/>Velocidad y Desplazamiento en mm]
-        H --> K[Descriptores Fonéticos<br/>Onset/Offset, Duración de fonación,<br/>Conteo de pausas y F0 en Hz]
+    subgraph Salidas [Extracción de Características y Consolidación]
+        F --> I[Descriptores sEMG<br/>RMS, Media y Desviación]
+        G --> J[Descriptores Cinemáticos<br/>Apertura, Ancho, ROM y Velocidad]
+        H --> K[Parámetros de Fonación<br/>Inicio, Fin y Estabilidad]
         
-        I --> L((Consolidación Clínica<br/>Índice de Desempeño Funcional<br/>Reporte PDF y Dashboard Comparativo))
+        I --> L((Consolidación Clínica<br/>Índice de Desempeño Funcional<br/>Reporte PDF y Dashboard))
         J --> L
         K --> L
     end
