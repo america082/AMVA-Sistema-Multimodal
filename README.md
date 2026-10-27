@@ -1,5 +1,3 @@
-# AMVA-Sistema-Multimodal
-Sistema multimodal (sEMG, visión por computadora y análisis acústico) para el apoyo en la evaluación clínica de terapias de rehabilitación oral.
 # AMVA: Sistema Multimodal para Apoyo en Terapias de Rehabilitación Oral
 
 **Centro Universitario de Ciencias Exactas e Ingenierías (CUCEI) — Universidad de Guadalajara**  
@@ -23,39 +21,6 @@ El sistema centraliza en una interfaz gráfica de usuario (GUI) desarrollada en 
 1. **Electromiografía de Superficie (sEMG):** Registro de un canal sobre el músculo orbicular de los labios para cuantificar niveles de activación muscular, reclutamiento motor y esfuerzo mediante métricas en el dominio temporal y frecuencial.
 2. **Visión por Computadora (Cinemática Facial):** Seguimiento perioral sin marcadores físicos mediante *MediaPipe Face Mesh*, calculando distancias inter-comisurales, apertura labial, rangos de movimiento (ROM) y velocidades de desplazamiento con conversión métrica calibrada (mm).
 3. **Análisis Acústico de la Fonación:** Captura de voz sincronizada con detección automatizada de actividad vocal (inicio, término, duración de fonación, conteo de pausas) y estimación de la frecuencia fundamental ($F_0$) mediante autocorrelación.
-
----
-
-## Arquitectura del Sistema y Flujo de Señales
-
-A continuación se presenta la arquitectura general de interconexión de hardware y los bloques de procesamiento digital implementados en el software central:
-
-```mermaid
-%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#CCFBF1', 'primaryTextColor': '#1E293B', 'primaryBorderColor': '#0F766E', 'lineColor': '#0F766E', 'secondaryColor': '#F8FAFC', 'tertiaryColor': '#FFFFFF' }}}%%
-graph TD
-    subgraph Adquisición [Adquisición de Bioseñales y Datos]
-        A[Músculo Orbicularis Oris<br/>Electrodos Ag/AgCl] -->|Potencial bioeléctrico| B(Sensor Analógico<br/>MyoWare 2.0)
-        B -->|Señal acondicionada| C[Microcontrolador ESP32<br/>ADC 12 bits · Pin GPIO 4<br/>Muestreo: 1000 Hz]
-        D[Cámara de Video Frontal<br/>Distancia estandarizada: 30 cm]
-        E[Micrófono Vocal<br/>Captura de voz sincronizada]
-    end
-
-    subgraph Procesamiento [Procesamiento Digital en Python - AMVA]
-        C -->|UART / Serial 115200 bps<br/>Búfer de 50 muestras| F[Módulo sEMG<br/>Filtro Notch 60 Hz y Pasa-Altas 20 Hz]
-        D -->|Fotogramas RGB| G[Módulo de Visión<br/>MediaPipe Face Mesh<br/>Landmarks 13, 14, 61, 291]
-        E -->|Flujo de Voz| H[Módulo Acústico<br/>Evaluación de Inicio, Fin<br/>y Estabilidad de Duración]
-    end
-
-    subgraph Salidas [Extracción de Características y Consolidación]
-        F --> I[Descriptores sEMG<br/>RMS, Media y Desviación]
-        G --> J[Descriptores Cinemáticos<br/>Apertura, Ancho, ROM y Velocidad]
-        H --> K[Parámetros de Fonación<br/>Inicio, Fin y Estabilidad]
-        
-        I --> L((Consolidación Clínica<br/>Índice de Desempeño Funcional<br/>Reporte PDF y Dashboard))
-        J --> L
-        K --> L
-    end
-```
 
 ---
 
@@ -98,7 +63,6 @@ El software guía al especialista y al participante a través de seis etapas sec
 | **Etapa 5** | **Palabras Funcionales** | Articulación de vocablos con carga fonética bilabial (*Mapa, Bebé, Bomba*). | 10 repeticiones por palabra (3 ciclos) |
 | **Etapa 6** | **Frases** | Producción de oraciones continuas (*"Mi mamá me mima"*, *"Papá toma sopa"*, *"Mi bebé toma biberón"*). | 1 ciclo completo |
 
-
 ---
 
 ## Instalación y Puesta en Marcha
@@ -112,7 +76,7 @@ El software guía al especialista y al participante a través de seis etapas sec
 Clona este repositorio e instala las librerías necesarias ejecutando en la terminal:
 
 ```bash
-git clone [https://github.com/america082/AMVA-Sistema-Multimodal.git](https://github.com/TU_USUARIO/AMVA-Sistema-Multimodal.git)
+git clone [https://github.com/TU_USUARIO/AMVA-Sistema-Multimodal.git](https://github.com/TU_USUARIO/AMVA-Sistema-Multimodal.git)
 cd AMVA-Sistema-Multimodal
 pip install -r requirements.txt
 ```
