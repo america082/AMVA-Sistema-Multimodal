@@ -76,7 +76,7 @@ El software guía al especialista y al participante a través de seis etapas sec
 Clona este repositorio e instala las librerías necesarias ejecutando en la terminal:
 
 ```bash
-git clone [https://github.com/america082/AMVA-Sistema-Multimodal.git](https://github.com/TU_USUARIO/AMVA-Sistema-Multimodal.git)
+git clone [https://github.com/america082/AMVA-Sistema-Multimodal.git](https://github.com/america082/AMVA-Sistema-Multimodal.git)
 cd AMVA-Sistema-Multimodal
 pip install -r requirements.txt
 ```
